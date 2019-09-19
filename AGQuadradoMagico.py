@@ -1,73 +1,60 @@
-# author Mathias Artur Schulz
-# since 16/09/2019
-
-# Genetic Algorithm - Magic Square (Quadrado Mágico)
-
-# Um Quadrado Mágico (QM) de ordem 3 é construído distribuindo-se os números de 1 a 9 
-# nas casas de uma tabela 3×3, um em cada casa, de maneira que a soma dos números de cada 
-# coluna, linha ou diagonal seja sempre a mesma.
-
-# Constituído por uma tabela quadrada com valores aleatório que não se repetem.
-# No qual a soma dos números de cada linha, coluna e das duas diagonais será sempre a mesma.
-
-# Indivíduos com fitness melhor reproduzem mais
-
-# RUN:
-# /usr/bin/python3 /home/matt/Workspace/AGQuadradoMagico/AGQuadradoMagico.py
-
 import random
 import numpy as np
 
-POPULATION_SIZE = 10
+
+POPULATION_SIZE = 500
+GENERATIONS = 1000
 PARENTS_SIZE = 2
 MUTATION_PROBABILITY = 0.5
 TABLE_SIZE = 3
 CHROMOSOME_SIZE = TABLE_SIZE * TABLE_SIZE
 MAX_VALUE_TABLE = CHROMOSOME_SIZE + CHROMOSOME_SIZE
 
-# Criação de um indivíduo da população
-# Utilizando uma matriz numpy
+
+# Criação de um indivíduo da população a partir de uma matriz numpy
 def chromosome():
     return np.random.choice(
         MAX_VALUE_TABLE, size=(TABLE_SIZE, TABLE_SIZE), replace=False
     )
 
+
 # Criação da população
 def population():
     return [chromosome() for i in range(POPULATION_SIZE)]
 
-# Função que avalia o fitness de um indivíduo
-# Verifica se é um bom gene para reprodução
-# Classifica o chromosome
-def fitness(chromosome):
+
+# Método que realiza a soma de cada linha, coluna e diagonal do cromossomo
+# Retorna um array com as somas
+def sumMatrix(chromosome):
     # Realiza a soma das colunas, cada posição do array representa uma coluna
     arraySumColumn = np.sum(chromosome, axis=0)
     # Realiza a soma das linhas, cada posição do array representa uma linha
     arraySumRow = np.sum(chromosome, axis=1)
-
     # Realiza a soma da diagonal principal
     sumPrimaryDiagonal = np.trace(chromosome)
-    # Realiza a soma da diagonal secundária
-    # Para pegar a diagonal secundária foi 
-    # invertido as linhas do cromossomo
-    # Tornando a diagonal secundária como primária
+    # Realiza a soma da diagonal secundária a partir da inversão das linhas
     sumSecondaryDiagonal = np.trace(chromosome[::-1])
-
     # Concatenação de todas somas em um único array
-    arraySum = np.concatenate([
+    chromosomeSum = np.concatenate([
         arraySumColumn, arraySumRow, [sumPrimaryDiagonal], [sumSecondaryDiagonal]
     ])
-    # Realiza a média de todas as somas
-    average = int(sum(arraySum) / len(arraySum))
+    return chromosomeSum
 
-    # Cálculo do fitness (Quanto menor o fitness melhor o cromossomo é)
-    # É realizado uma soma das distâncias de cada soma com a média
-    # Quando maior a soma final, pior é o cromossomo
+
+# Método que calcula o fitness de um chromosome
+# Fitness: Soma das distâncias de cada soma com a média
+# OBS: Quanto menor o fitness melhor o cromossomo é
+def fitness(chromosome):
+    chromosomeSum = sumMatrix(chromosome)
+    # Realiza a média de todas as somas
+    average = int(sum(chromosomeSum) / len(chromosomeSum))
+
     fitness = 0
-    for i in range(len(arraySum)):
-        diff = arraySum[i] - average
+    for i in range(len(chromosomeSum)):
+        diff = chromosomeSum[i] - average
         fitness = fitness + (diff if diff > 0 else -diff)
     return fitness
+
 
 # Método de seleçao dos pais e cruzamento
 def selectionAndCrossover(population):
@@ -119,6 +106,7 @@ def selectionAndCrossover(population):
         # print(populationByFitness[i])
     return populationByFitness
 
+
 # Função de mutação
 # Utilizar valores pequenos de taxa de mutação para o algoritmo não ficar aleatório
 def mutation(population):
@@ -140,8 +128,8 @@ def mutation(population):
             newValue = random.randint(1, MAX_VALUE_TABLE)
             # print('newValue')
             # print(newValue)
-            while(newValue == population[i][mutationPoint]):
-                newValue = random.randint(1,9)
+            while(newValue in population[i]):
+                newValue = random.randint(1, MAX_VALUE_TABLE)
             population[i][mutationPoint] = newValue
             # print('population with mutation')
             # print(population[i])
@@ -178,11 +166,19 @@ population = population()
 print('População inicial: ')
 [print(chromosome) for chromosome in population]
 print('\n')
-for i in range(100):
+for i in range(GENERATIONS):
     population = selectionAndCrossover(population)
     population = mutation(population)
 print('População Final: ')
 [print(chromosome) for chromosome in population]
 
+chromosomeAndFitness = [(fitness(i), i) for i in population]
+
+# Ordena a população por fitness
+# Do pior (maior) fitness para o melhor (menor)
+population = [
+    i[1] for i in sorted(chromosomeAndFitness, key=lambda chromosome: chromosome[0], reverse=True)
+]
 validation(population)
 
+# Fitness | C1 | C2 | Cn | R1 | R2 | Rn | D1 | D2

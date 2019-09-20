@@ -41,14 +41,14 @@ def sumMatrix(chromosome):
     return chromosomeSum
 
 
-# Converte os cromossomos de uma população em uma matriz
+# Converte cada cromossomo de uma população em uma matriz
 def populationArrayToMatrix(population):
-    return [i.reshape(-1) for i in population]
-
-
-# Converte os cromossomos de uma população em um array
-def populationMatrixToArray(population):
     return [i.reshape(TABLE_SIZE, TABLE_SIZE) for i in population]
+
+
+# Converte cada cromossomo de uma população em um array
+def populationMatrixToArray(population):
+    return [i.reshape(-1) for i in population]
 
 
 # Método que calcula o fitness de um chromosome
@@ -75,7 +75,6 @@ def selectionAndCrossover(population):
         i[1] for i in sorted(chromosomeAndFitness, key=lambda chromosome: chromosome[0], reverse=True)
     ]
     populationByFitness = populationMatrixToArray(populationByFitness)
-    
     # Seleciona os pais, cromossomos com melhor fitness (fitness mais baixo)
     parents = populationByFitness[(len(populationByFitness) - PARENTS_SIZE):]
 
@@ -84,26 +83,14 @@ def selectionAndCrossover(population):
         # Caso possua mais de dois pais, é selecionado aleatóriamente apenas dois
         parents = random.sample(parents, 2)
         
-        # print('cromossomo atual: ')
-        # print(populationByFitness[i])
-        # PEGA UM PONTO DE CORTE RANDÔMICO PARA REALIZAR O CROSSOVER
+        # Pega um ponto de corte randômico para realizar o crossover
         cutPoint = random.randint(1, CHROMOSOME_SIZE - 1)
-        # print('ponto de corte')
-        # print(cutPoint)
-        # REALIZA O CROSSOVER
-        # PEGA A PARTE DO PARENT 1 ANTES DO PONTO DE CORTE
+        # Cromossomo atual recebe do pai 1 os valores antes do corte
         populationByFitness[i][:cutPoint] = parents[0][:cutPoint]
-        # print('crossover 1: ')
-        # print(populationByFitness[i])
-        # PEGA A PARTE DO PARENT 2 A PARTIR DO PONTO DE CORTE
+        # Cromossomo atual recebe do pai 2 os valores a partir do corte
         populationByFitness[i][cutPoint:] = parents[1][cutPoint:]
-        # print('crossover 2: ')
-        # print(populationByFitness[i])
-
-        # TRANSFORMAÇÃO DO CROMOSSOMO ATUAL NOVAMENTE EM UMA MATRIZ
-        populationByFitness[i] = populationByFitness[i].reshape(TABLE_SIZE, TABLE_SIZE)
-        # print('matriz ')
-        # print(populationByFitness[i])
+    
+    populationByFitness = populationArrayToMatrix(populationByFitness)
     return populationByFitness
 
 

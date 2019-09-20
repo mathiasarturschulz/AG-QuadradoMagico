@@ -20,15 +20,18 @@ Caso o fitness seja igual a zero significa que a soma de cada linha, cada coluna
 # Exemplo de Resultado
 -- Cromossomo:
 
-{
 [[ 2  9  7]
+
  [13  4  1]
+
  [ 6  5 10]]
-}
 
 -- Fitness:
+
 9
+
 -- Somas [Coluna1 Coluna2 Coluna3 Linha1 Linha2 Linha3 Diagonal1 Diagonal2]:
+
 [21 18 18 18 18 21 16 17]
 
 # Run

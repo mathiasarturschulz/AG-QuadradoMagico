@@ -1,4 +1,4 @@
-# AG-QuadradoMagico
+# Algoritmo Genético - Quadrado Mágico
 
 Genetic Algorithm - Magic Square (Quadrado Mágico)
 Algoritmo Genético - Quadrado Mágico
@@ -6,14 +6,26 @@ Algoritmo Genético - Quadrado Mágico
 @author Mathias Artur Schulz
 @since 16/09/2019
 
-O principal objetivo de um quadrado mágico e que a soma dos números
+O principal objetivo de um quadrado mágico é que a soma de cada linha, coluna e as duas diagonais sejam sempre iguais.
 
-Um Quadrado Mágico (QM) de ordem 3 é construído distribuindo-se os números de 1 a 9 
-nas casas de uma tabela 3×3, um em cada casa, de maneira que a soma dos números de cada 
-coluna, linha ou diagonal seja sempre a mesma.
-Constituído por uma tabela quadrada com valores aleatório que não se repetem.
-No qual a soma dos números de cada linha, coluna e das duas diagonais será sempre a mesma.
-Indivíduos com fitness melhor reproduzem mais.
+Um quadrado mágico pode ser de qualquer tamanho, no entanto deve ser constituído por uma tabela quadrada com valores aleatórios que não se repetem.
 
-RUN:
+Para geração dos valores aleatórios, devem ser um random de pelo menos zero e o número de células da tabela. No entando essa configuração pode ser alterada para permitir valores randômicos em uma faixa maior, mas não menor, pois os valores não se repetem.
+
+# Fitness
+O fitness é calculado a partir da soma de cada linha, cada coluna e das duas diagonais, a partir das somas é realizado uma média entre as respectivas somas. Com isso, é realizado uma comparação de cada soma com a média e é calculado a diferença entre a respectiva soma e a média.
+
+Caso o fitness seja igual a zero significa que a soma de cada linha, cada coluna e das duas diagonais são iguais, ou seja, quanto maior o fitness, pior é o cromossomo.
+
+# Exemplo de Resultado
+-- Cromossomo:
+[[ 2  9  7]
+ [13  4  1]
+ [ 6  5 10]]
+-- Fitness:
+9
+-- Somas [Coluna1 Coluna2 Coluna3 Linha1 Linha2 Linha3 Diagonal1 Diagonal2]:
+[21 18 18 18 18 21 16 17]
+
+# Run
 /usr/bin/python3 /home/matt/Workspace/AGQuadradoMagico/AGQuadradoMagico.py

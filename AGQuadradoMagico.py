@@ -112,47 +112,33 @@ def mutation(population):
     population = populationArrayToMatrix(population)
     return population
 
-# Método para realizar a validação se um chromosome alcançou o objetivo
-# esperado, que é o quadrado mágico
-def validation(population):
-    print('\n Validation: ')
-    for chromosome in population:
-        # Realiza a soma das colunas, cada posição do array representa uma coluna
-        arraySumColumn = np.sum(chromosome, axis=0)
-        # Realiza a soma das linhas, cada posição do array representa uma linha
-        arraySumRow = np.sum(chromosome, axis=1)
 
-        # Realiza a soma da diagonal principal
-        sumPrimaryDiagonal = np.trace(chromosome)
-        # Realiza a soma da diagonal secundária
-        # Para pegar a diagonal secundária foi 
-        # invertido as linhas do cromossomo
-        # Tornando a diagonal secundária como primária
-        sumSecondaryDiagonal = np.trace(chromosome[::-1])
-
-        # Concatenação de todas somas em um único array
-        arraySum = np.concatenate([
-            arraySumColumn, arraySumRow, [sumPrimaryDiagonal], [sumSecondaryDiagonal]
-        ])
+# Apresenta cada cromossomo e seu resultado
+def verification(populationWithFitness):
+    for chromosomeWithFitness in populationWithFitness:
+        print(chromosomeWithFitness[1])
+        print(chromosomeWithFitness[0])
+        arraySum = sumMatrix(chromosomeWithFitness[1])
         print(arraySum)
+    print('Resultados: \nChromosome \nFitness')
+    print('Array Sum [Column1 Column2 ColumnN Row1 Row2 RowN Diagonal1 Diagonal2] ')
 
+
+# Código principal
 population = population()
 print('População inicial: ')
 [print(chromosome) for chromosome in population]
-print('\n')
+print('\n'*5)
 for i in range(GENERATIONS):
     population = selectionAndCrossover(population)
     population = mutation(population)
-print('População Final: ')
-[print(chromosome) for chromosome in population]
+print('\n'*5)
 
+
+# Resultados
+print('População final e resultados: ')
 chromosomeAndFitness = [(fitness(i), i) for i in population]
-
-# Ordena a população por fitness
-# Do pior (maior) fitness para o melhor (menor)
-population = [
-    i[1] for i in sorted(chromosomeAndFitness, key=lambda chromosome: chromosome[0], reverse=True)
+populationWithFitness = [
+    i for i in sorted(chromosomeAndFitness, key=lambda chromosome: chromosome[0], reverse=True)
 ]
-validation(population)
-
-# Fitness | C1 | C2 | Cn | R1 | R2 | Rn | D1 | D2
+verification(populationWithFitness)

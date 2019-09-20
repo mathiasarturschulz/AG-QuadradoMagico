@@ -41,6 +41,16 @@ def sumMatrix(chromosome):
     return chromosomeSum
 
 
+# Converte os cromossomos de uma população em uma matriz
+def populationArrayToMatrix(population):
+    return [i.reshape(-1) for i in population]
+
+
+# Converte os cromossomos de uma população em um array
+def populationMatrixToArray(population):
+    return [i.reshape(TABLE_SIZE, TABLE_SIZE) for i in population]
+
+
 # Método que calcula o fitness de um chromosome
 # Fitness: Soma das distâncias de cada soma com a média
 # OBS: Quanto menor o fitness melhor o cromossomo é
@@ -60,30 +70,20 @@ def fitness(chromosome):
 def selectionAndCrossover(population):
     # Monta um array com cada cromossomo e seu respectivo fitness
     chromosomeAndFitness = [(fitness(i), i) for i in population]
-
-    # Ordena a população por fitness
-    # Do pior (maior) fitness para o melhor (menor)
+    # Ordena a população por fitness - Do pior (maior) fitness para o melhor (menor)
     populationByFitness = [
         i[1] for i in sorted(chromosomeAndFitness, key=lambda chromosome: chromosome[0], reverse=True)
     ]
-    # print('\n Chromosomes: ')
-    # [print(chromosome) for chromosome in populationByFitness]
+    populationByFitness = populationMatrixToArray(populationByFitness)
     
-    # SELECIONA OS CROMOSSOMOS COM O MELHOR FITNESS DE ACORDO COM A VARIAVEL PARENTS
+    # Seleciona os pais, cromossomos com melhor fitness (fitness mais baixo)
     parents = populationByFitness[(len(populationByFitness) - PARENTS_SIZE):]
-    # print('\n Melhores:')
-    # [print(chromosome) for chromosome in parents]
 
-    # print('\n Resto')
-    # É PASSADO PELOS OUTROS CROMOSSOMOS E REALIZADO O CROSSOVER
+    # Passa pelos outros cromossomos realizando o crossover com os pais
     for i in range(len(populationByFitness) - PARENTS_SIZE):
-        # CASO HAJA MAIS DE DOIS PARENTS É SELECIONADO DE FORMA ALEATÓRIA APENAS DOIS
+        # Caso possua mais de dois pais, é selecionado aleatóriamente apenas dois
         parents = random.sample(parents, 2)
-        parents = [i.reshape(-1) for i in parents]
-        # print('\n parents')
-        # print(parents)
-        # TRANSFORMAÇÃO DO CROMOSSOMO ATUAL EM UM ARRAY PARA APLICAR O CROSSOVER
-        populationByFitness[i] = populationByFitness[i].reshape(-1)
+        
         # print('cromossomo atual: ')
         # print(populationByFitness[i])
         # PEGA UM PONTO DE CORTE RANDÔMICO PARA REALIZAR O CROSSOVER

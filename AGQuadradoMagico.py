@@ -95,34 +95,21 @@ def selectionAndCrossover(population):
 
 
 # Função de mutação
-# Utilizar valores pequenos de taxa de mutação para o algoritmo não ficar aleatório
 def mutation(population):
-    # PERCORRO OS CROMOSSOMOS SEM CONTAR OS PARENTS
+    population = populationMatrixToArray(population)
+    # Percorre os cromossomos sem contar os pais
     for i in range(len(population) - PARENTS_SIZE):
-        # GERAÇÃO DE UM VALOR RANDÔMICO
-        # CASO O RANDOM SEJA MENOR OU IGUAL A PROBABILIDADE DE MUTAÇÃO
-        # OCORRERÁ A MUTAÇÃO
+        # Caso o random seja <= a probabilidade de mutação, ocorrerá a mutação
         if (random.random() <= MUTATION_PROBABILITY):
-            # print(population[i])
-            # TRANSFORMAÇÃO DO CROMOSSOMO ATUAL EM UM ARRAY PARA APLICAR A MUTAÇÃO
-            population[i] = population[i].reshape(-1)
-            # print(population[i])
-            # GERAÇÃO DA POSIÇÃO DO ARRAY QUE TERÁ O VALOR ALTERADO (MUTAÇÃO)
+            # Posição que ocorrerá a mutação no cromossomo
             mutationPoint = random.randint(0, CHROMOSOME_SIZE - 1)
-            # print('mutationPoint')
-            # print(mutationPoint)
-            # GERAÇÃO DO NOVO VALOR PARA MUTAÇÃO
+            # Novo valor para mutação do cromossomo
             newValue = random.randint(1, MAX_VALUE_TABLE)
-            # print('newValue')
-            # print(newValue)
             while(newValue in population[i]):
                 newValue = random.randint(1, MAX_VALUE_TABLE)
             population[i][mutationPoint] = newValue
-            # print('population with mutation')
-            # print(population[i])
-            # TRANSFORMAÇÃO DO CROMOSSOMO ATUAL NOVAMENTE EM UMA MATRIZ
-            population[i] = population[i].reshape(TABLE_SIZE, TABLE_SIZE)
-            # print (population[i])
+    
+    population = populationArrayToMatrix(population)
     return population
 
 # Método para realizar a validação se um chromosome alcançou o objetivo

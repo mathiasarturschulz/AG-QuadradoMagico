@@ -66,37 +66,37 @@ def fitness(chromosome):
     return fitness
 
 
+# Método que ordena a população de acordo com o fitness
+def populationSortedByFitness(population):
+    # Monta um array com cada cromossomo e seu respectivo fitness
+    populationWithFitness = [(fitness(i), i) for i in population]
+    # Ordena a população por fitness - Do pior (maior) fitness para o melhor (menor)
+    return [
+        i[1] for i in sorted(populationWithFitness, key=lambda chromosome: chromosome[0], reverse=True)
+    ]
+
+
 # Método de seleçao dos pais e cruzamento
 def selectionAndCrossover(population):
-    # Monta um array com cada cromossomo e seu respectivo fitness
-    chromosomeAndFitness = [(fitness(i), i) for i in population]
-    # Ordena a população por fitness - Do pior (maior) fitness para o melhor (menor)
-    populationByFitness = [
-        i[1] for i in sorted(chromosomeAndFitness, key=lambda chromosome: chromosome[0], reverse=True)
-    ]
-    populationByFitness = populationMatrixToArray(populationByFitness)
     # Seleciona os pais, cromossomos com melhor fitness (fitness mais baixo)
-    parents = populationByFitness[(len(populationByFitness) - PARENTS_SIZE):]
+    parents = population[(len(population) - PARENTS_SIZE):]
 
     # Passa pelos outros cromossomos realizando o crossover com os pais
-    for i in range(len(populationByFitness) - PARENTS_SIZE):
+    for i in range(len(population) - PARENTS_SIZE):
         # Caso possua mais de dois pais, é selecionado aleatóriamente apenas dois
         parents = random.sample(parents, 2)
         
         # Pega um ponto de corte randômico para realizar o crossover
         cutPoint = random.randint(1, CHROMOSOME_SIZE - 1)
         # Cromossomo atual recebe do pai 1 os valores antes do corte
-        populationByFitness[i][:cutPoint] = parents[0][:cutPoint]
+        population[i][:cutPoint] = parents[0][:cutPoint]
         # Cromossomo atual recebe do pai 2 os valores a partir do corte
-        populationByFitness[i][cutPoint:] = parents[1][cutPoint:]
-    
-    populationByFitness = populationArrayToMatrix(populationByFitness)
-    return populationByFitness
+        population[i][cutPoint:] = parents[1][cutPoint:]
+    return population
 
 
 # Função de mutação
 def mutation(population):
-    population = populationMatrixToArray(population)
     # Percorre os cromossomos sem contar os pais
     for i in range(len(population) - PARENTS_SIZE):
         # Caso o random seja <= a probabilidade de mutação, ocorrerá a mutação
@@ -108,8 +108,6 @@ def mutation(population):
             while(newValue in population[i]):
                 newValue = random.randint(1, MAX_VALUE_TABLE)
             population[i][mutationPoint] = newValue
-    
-    population = populationArrayToMatrix(population)
     return population
 
 
@@ -130,8 +128,11 @@ print('População inicial: ')
 [print(chromosome) for chromosome in population]
 print('\n'*5)
 for i in range(GENERATIONS):
+    population = populationSortedByFitness(population)
+    population = populationMatrixToArray(population)
     population = selectionAndCrossover(population)
     population = mutation(population)
+    population = populationArrayToMatrix(population)
 print('\n'*5)
 
 

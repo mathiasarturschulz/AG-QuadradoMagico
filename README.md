@@ -29,7 +29,7 @@ Para a representação de um cromossomo foi utilizado uma matriz construída a p
 A matriz quadrada possui ordem n e valores aleatórios que não se repetem. Para geração dos valores aleatórios, sempre será um valor inteiro maior que zero, sendo que o valor máximo permitido será o número de células da matriz ao quadrado, no entanto esse valor pode ser facilmente configurado nas variáveis iniciais do algoritmo. No entanto, o valor máximo a ser gerado não deve ser menor que o número de células da matriz, devido ao fato de não ser permitido valores repetidos.
 
 
-# Fitness (Função de Avaliação)
+## Fitness (Função de Avaliação)
 
 Para geração do fitness de um cromossomo, primeiramente é realizado a soma de cada linha, coluna e das duas diagonais, sendo que cada soma é armazenada em uma posição do array de somas. Com isso, a partir das somas encontradas, é realizado uma média das somas.
 
@@ -87,5 +87,5 @@ valor_fitness
 [21 18 18 18 18 21 16 17]
 
 
-# Exemplo de como rodar
+## Exemplo de como rodar
 /usr/bin/python3 /home/matt/Workspace/AGQuadradoMagico/AGQuadradoMagico.py

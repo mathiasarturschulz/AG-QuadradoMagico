@@ -15,8 +15,6 @@ Acredita-se que a origem do quadrado mágico tenha sido na China e na Índia, h�
 
 No século XV, os quadrados mágicos se tornaram conhecidos na Europa, sendo relacionados com a alquimia e a astrologia. Um quadrado mágico gravado numa placa de prata era usado como amuleto contra a peste, além disso, cada quadrado mágico de ordem 3 até a ordem 9 representava um planeta, que são: Ordem 3 representava Saturno; Ordem 4 representava Júpiter, Ordem 5 representava Marte; Ordem 6 representava Solenoide; Ordem 7 representava Vénus; Ordem 8 representava Mercúrio e ordem 9 representava Luna.
 
-O presente relatório técnico possui como objetivo apresentar a construção de um algoritmo genético desenvolvido na linguagem de programação Python com o propósito de resolver o problema do quadrado mágico. Será abordado e explicado a forma de representação do cromossomo, o fitness e os operadores genéticos, por fim será apresentado o código e os testes realizados.
-
 ##### Link de Referência:
 http://www.mat.uc.pt/~mat0717/public_html/Cadeiras/1Semestre/O%20que%20%C3%A9%20um%20quadrado%20m%C3%A1gico.pdf
 

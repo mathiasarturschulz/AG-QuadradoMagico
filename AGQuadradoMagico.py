@@ -1,3 +1,4 @@
+import time
 import random
 import numpy as np
 
@@ -118,11 +119,12 @@ def verification(populationWithFitness):
         print(chromosomeWithFitness[0])
         arraySum = sumMatrix(chromosomeWithFitness[1])
         print(arraySum)
-    print('Resultados: \nChromosome \nFitness')
+    print('--Resultados: \nChromosome \nFitness')
     print('Array Sum [Column1 Column2 ColumnN Row1 Row2 RowN Diagonal1 Diagonal2] ')
 
 
 # Código principal
+tempoInicial = time.time()
 population = population()
 print('População inicial: ')
 [print(chromosome) for chromosome in population]
@@ -134,6 +136,7 @@ for i in range(GENERATIONS):
     population = mutation(population)
     population = populationArrayToMatrix(population)
 print('\n'*5)
+tempoFinal = time.time()
 
 
 # Resultados
@@ -143,3 +146,5 @@ populationWithFitness = [
     i for i in sorted(chromosomeAndFitness, key=lambda chromosome: chromosome[0], reverse=True)
 ]
 verification(populationWithFitness)
+print('--Tempo de execução: ')
+print(tempoFinal - tempoInicial)
